@@ -15,9 +15,11 @@ import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { W3SSdk } from '@circle-fin/w3s-pw-web-sdk'
 import { useUser } from '../Context/UserContext'
+import { useRouter } from 'next/router'
 
 const Welcome = () => {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   const { setUser, user } = useUser()
   const processLogin = async () => {
     console.log('Processing login...')
@@ -93,6 +95,7 @@ const Welcome = () => {
         address: walletAddress,
         walletId: walletId,
       })
+      router.push('/instructions')
     } catch (error) {
       console.error('Error while processing login:', error)
       Toast({
