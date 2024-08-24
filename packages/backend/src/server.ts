@@ -1,54 +1,66 @@
 import express, { Request, Response } from "express";
-import axios from "axios";
 import * as dotenv from "dotenv";
-import { type IVerifyResponse, verifyCloudProof } from "@worldcoin/idkit";
+import axios from "axios";
 
-// Cargar variables de entorno desde el archivo .env
 dotenv.config();
 
-// Configuración del servidor
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware para parsear el cuerpo de la solicitud
 app.use(express.json());
 
-// Ruta para manejar la verificación
 app.post("/ok", async (req: Request, res: Response) => {
   res.status(200).send("ok");
 });
 
-// Inicia el servidor
-app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost:${port}`);
-});
-
-// Ruta para manejar la verificación
-app.post("/verify", async (req: Request, res: Response) => {
-  const { proof, signal } = req.body;
-  const app_id = process.env.APP_ID as `app_${string}`;
-  const action = process.env.ACTION_ID as `app_${string}`;
-  const verifyRes = (await verifyCloudProof(
+app.post("/verify", async (req, res) => {
+  const {
+    nullifier_hash,
     proof,
-    app_id,
+    merkle_root,
+    verification_level,
     action,
-    signal
-  )) as IVerifyResponse;
+    signal_hash,
+  } = req.body;
 
-  console.log("vamo a ver", verifyRes);
+  const app_id = process.env.APP_ID;
 
-  if (verifyRes.success) {
-    // This is where you should perform backend actions if the verification succeeds
-    // Such as, setting a user as "verified" in a database
-    res.status(200).send(verifyRes);
-  } else {
-    // This is where you should handle errors from the World ID /verify endpoint.
-    // Usually these errors are due to a user having already verified.
-    res.status(400).send(verifyRes);
+  try {
+    const response = await axios.post(
+      `https://developer.worldcoin.org/api/v2/verify/${app_id}`,
+      {
+        nullifier_hash,
+        proof,
+        merkle_root,
+        verification_level,
+        action,
+        signal_hash,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": "YourAppName/1.0",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      res.json({ success: true, message: "Verification successful" });
+    }
+  } catch (error: any) {
+    if (error.response) {
+      res
+        .status(error.response.status)
+        .json({ success: false, message: error.response.data });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "An error occurred during verification",
+      });
+    }
   }
 });
 
-// Inicia el servidor
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
 });
