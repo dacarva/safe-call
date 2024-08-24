@@ -7,10 +7,12 @@ contract Feedback {
     ISemaphore public semaphore;
 
     uint256 public groupId;
+    mapping (uint256 => uint256) public messageStore;
+    uint256 public messageCounter;
 
     constructor(address semaphoreAddress) {
         semaphore = ISemaphore(semaphoreAddress);
-
+        messageCounter = 0;
         groupId = semaphore.createGroup();
     }
 
@@ -35,5 +37,12 @@ contract Feedback {
         );
 
         semaphore.validateProof(groupId, proof);
+    }
+
+    function storeMessage (ISemaphore.SemaphoreProof memory proof) public returns (uint256 messsage) {
+        require(semaphore.verifyProof(groupId, proof), "Invalid proof");
+        messageCounter++;
+        messageStore[messageCounter] = proof.message;
+        return proof.message;
     }
 }

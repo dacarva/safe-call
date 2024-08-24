@@ -22,7 +22,9 @@ const config: HardhatUserConfig = {
         target: "ethers-v6"
     },
     etherscan: {
-        apiKey: process.env.ETHERSCAN_API_KEY
+        apiKey: {
+            polygonAmoy: process.env.POLYGON_AMOY_ETHERSCAN_API_KEY || "",
+        }
     },
     sourcify: {
         enabled: true
