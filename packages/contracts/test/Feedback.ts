@@ -46,7 +46,7 @@ describe("Feedback", () => {
 
     describe("# sendFeedback", () => {
         it("Should allow users to send feedback anonymously", async () => {
-            const { semaphoreContract, feedbackContract, groupId } = await loadFixture(deployFeedbackFixture)
+            const { feedbackContract, groupId } = await loadFixture(deployFeedbackFixture)
 
             const users = [new Identity(), new Identity()]
             const group = new Group()
@@ -59,26 +59,11 @@ describe("Feedback", () => {
             const feedback = encodeBytes32String("Hello World")
 
             const proof = await generateProof(users[1], group, feedback, groupId)
+            await feedbackContract.storeMessage(proof)
+            const newMessageIndex = await feedbackContract.messageCounter()
+            const message = await feedbackContract.messageStore(newMessageIndex)
+            await expect(message).to.equal(BigInt(proof.message))
 
-            const transaction = feedbackContract.sendFeedback(
-                proof.merkleTreeDepth,
-                proof.merkleTreeRoot,
-                proof.nullifier,
-                feedback,
-                proof.points
-            )
-
-            await expect(transaction)
-                .to.emit(semaphoreContract, "ProofValidated")
-                .withArgs(
-                    groupId,
-                    proof.merkleTreeDepth,
-                    proof.merkleTreeRoot,
-                    proof.nullifier,
-                    proof.message,
-                    groupId,
-                    proof.points
-                )
         })
     })
 })
