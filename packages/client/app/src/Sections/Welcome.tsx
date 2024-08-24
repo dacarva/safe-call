@@ -1,4 +1,3 @@
-'use client'
 
 import {
   Box,
@@ -14,12 +13,12 @@ import {
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { W3SSdk } from '@circle-fin/w3s-pw-web-sdk'
-import { useUser } from '../Context/UserContext'
-import { useRouter } from 'next/router'
+import { useUser } from '../../../components/Context/UserContext'
+import { useRouter } from 'next/navigation'
 
 const Welcome = () => {
-  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
   const { setUser, user } = useUser()
   const processLogin = async () => {
     console.log('Processing login...')
@@ -36,7 +35,6 @@ const Welcome = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data1),
       })
-      setIsLoading(false)
       const data2 = await initUserWalletResponse.json()
       const userToken = data2.userToken
       const encryptionKey = data2.encryptionKey
