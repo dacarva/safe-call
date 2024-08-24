@@ -1,0 +1,12 @@
+{
+  "name": "safe-call",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dacarva/safe-call.git",
+  "author": "David Carvajal <david@tropykus.com>",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "yarn@4.4.1"
+}
