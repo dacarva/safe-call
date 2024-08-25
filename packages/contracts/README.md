@@ -2,7 +2,9 @@
 
 This project demonstrates a basic Semaphore use case. It comes with a sample contract, a test for that contract and a sample task that deploys that contract.
 
-## Install
+## Integracion Donation contract
+
+https://github.com/pinalikefruit/vox-guard/blob/master/js/blockchain_stuff.js
 
 ### Install dependencies
 
