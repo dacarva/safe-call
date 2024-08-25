@@ -57,7 +57,7 @@ const ReportHistory = () => {
           <TabPanels>
             <TabPanel>
               <List spacing={4}>
-                {reports.map((report, index) => (
+                {reportsData && reports.map((report, index) => (
                   <ListItem key={index}>
                     <Flex
                       justify="space-between"
@@ -76,7 +76,7 @@ const ReportHistory = () => {
                     </Flex>
                   </ListItem>
                 ))}
-                {reportsData.map((report: any, index: number) => (
+                {reportsData && reportsData.map((report: any, index: number) => (
                   <ListItem key={index}>
                     <Flex
                       justify="space-between"
