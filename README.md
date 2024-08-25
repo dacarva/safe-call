@@ -1,7 +1,7 @@
 # Vox Guard
 
 ## Overview
-Vox Guard is an application that leverages zero knowledge proofs to enable anonymous reporting and receive donations on USDC for victims of domestic and sexual violence. The application is built using Next.js for the frontend, Express for the backend, and Hardhat for smart contract development.
+**Vox Guard** is an application that leverages zero knowledge proofs to enable anonymous reports from victims of domestic and sexual violence as well as to receive anoynumous donations on USDC for NGOs and other organizations working to tackle these issues. The application is built using Next.js for the frontend and backend, and Hardhat for smart contracts development.
 
 ## Table of Contents
 - [Vox Guard](#vox-guard)
@@ -9,7 +9,7 @@ Vox Guard is an application that leverages zero knowledge proofs to enable anony
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Tech Stack](#tech-stack)
-  - [Deployed contractgs](#deployed-contractgs)
+  - [Deployed contracts](#deployed-contracts)
   - [Installation](#installation)
     - [Prerequisites](#prerequisites)
     - [Steps](#steps)
@@ -20,21 +20,23 @@ Vox Guard is an application that leverages zero knowledge proofs to enable anony
 ## Features
 - Proof of humanity and uniqueness using World ID
 - Anonymous reporting using zero knowledge proofs
-- Anonymous claim of donations on USDC
+- Anonymous donations on USDC
 - Secure and private data handling
 - User-friendly interface for submitting reports
 - Blockchain integration for immutable records
 
 ## Tech Stack
-- **Frontend:** Next.js
-- **Backend:** Express
+- **Frontend:** NextJS
+- **Backend:** NextJS
 - **Smart Contracts:** Hardhat
 - **Blockchain:** Polygon Amoi
 
-## Deployed contractgs
+## Deployed contracts
 - **Semaphore** - 0x1e0d7FF1610e480fC93BdEC510811ea2Ba6d7c2f
-- **Reporting** - 0xaD70d6F2E00378B13579611a633964b7bE63957B
-- **Donations** - XXXX
+- **Reporting** - 0x9D17D65B2470699a2A2693C92AC8471f4FC6c68b
+- **Poseidon** - 0xcc4B4bfcb2Fb9E91B8E29a36C19Dac772Ea2B3D6
+- **Verifier** - 0x5aD9E561647d3Ad042E134784aef90F188BbC91D
+- **Donation** - 0xFFBF148b5D7f1b785d6e577e05a318552Da1D589
 
 ## Installation
 
