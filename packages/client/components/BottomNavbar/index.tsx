@@ -5,14 +5,24 @@
 import { Box, IconButton, Text } from "@chakra-ui/react";
 import { BiDonateHeart, BiHistory, BiMessageSquareError } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const BottomNavbar = () => {
   const router = useRouter();
-
+  const {data} = useSession();
   const handleNavigation = (path: string) => {
     router.push(path);
   };
-
+  const [isLogged, setIsLogged] = useState(false);
+  useEffect(() => {
+    if (data?.user?.name) {
+      setIsLogged(true);
+    }
+  }, [data?.user?.name])
+  if(!isLogged) {
+    return null;
+  }
   return (
     <Box
       position="fixed"
