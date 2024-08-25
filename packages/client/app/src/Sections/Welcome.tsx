@@ -31,6 +31,8 @@ const Welcome = () => {
       if (userDataStored) {
         const parsedData = JSON.parse(userDataStored)
         setUser(parsedData)
+        console.log('User data:', parsedData);
+        
         router.push('/home')
       } else {
         const userId = uuidv4()
