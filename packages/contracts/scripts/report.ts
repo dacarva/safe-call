@@ -44,8 +44,19 @@ async function main() {
 
     const onchainVerification = await semaphoreProof.verifyProof(groupId, proof)
 
+    const coordinates = {
+        TLX: -1,
+        TLY: 2,
+        TRX: 3,
+        TRY: 4,
+        BLX: 5,
+        BLY: 6,
+        BRX: 7,
+        BRY: 8
+    };
+
     if(offChainverification && onchainVerification) {
-        const storeMessage = await feedback.storeMessage(proof)
+        const storeMessage = await feedback.storeMessage(proof, coordinates)
         const response = await storeMessage.wait()
         console.log("🚀 ~ main ~ response:", response)
     

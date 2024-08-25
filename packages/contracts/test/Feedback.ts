@@ -59,11 +59,27 @@ describe("Feedback", () => {
             const feedback = encodeBytes32String("Hello World")
 
             const proof = await generateProof(users[1], group, feedback, groupId)
-            await feedbackContract.storeMessage(proof)
+
+            const  factor = 10** Number(await feedbackContract.ROUND_FACTOR());
+
+            const coordinates = {
+                TLX: Math.round(-34.55630262174668 * factor),
+                TLY: Math.round(-58.47039246947173 * factor),
+                TRX: Math.round(-34.55630262174668 * factor),
+                TRY: Math.round(58.4158400523308 * factor),
+                BLX: Math.round(-34.60121818049623 * factor),
+                BLY: Math.round(-58.47039246947173 * factor),
+                BRX: Math.round(-34.60121818049623 * factor),
+                BRY: Math.round(-58.41584005233085 * factor),
+            }
+            const tx = await feedbackContract.storeMessage(proof, coordinates)
             const newMessageIndex = await feedbackContract.messageCounter()
             const message = await feedbackContract.messageStore(newMessageIndex)
             await expect(message).to.equal(BigInt(proof.message))
 
+            const readCoordinates = await feedbackContract.coordinatesStore(newMessageIndex)
+            console.log("🚀 ~ it ~ readCoordinates:", readCoordinates)
+            expect(tx).to.emit(feedbackContract, "MessageStored").withArgs(newMessageIndex, coordinates)
         })
     })
 })
