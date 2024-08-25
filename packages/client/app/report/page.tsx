@@ -10,11 +10,21 @@ import { ethers } from 'ethers'
 import { FEEDBACK_ADDRESS, SEMAPHORE_ADDRESS } from "../../../contracts/constants"
 import { Feedback} from "../../../contracts/typechain-types"
 import {Feedback__factory, SemaphoreGroups__factory} from "../../../contracts/typechain-types"
+import { useRouter } from 'next/navigation'
 const ReportPage = () => {
   const [step, setStep] = useState(1)
+  const [textReport, setTextReport] = useState('')
   const {user} = useUser()
+  const router = useRouter()
+
   const handleNextStep = () => {
     setStep(step + 1)
+  }
+  const handleBackStep = () => {
+    setStep(step - 1)
+  }
+  const backHome = () => {
+    router.push('/home')
   }
   const obtainGroupId = async () => {
     try {
@@ -83,7 +93,13 @@ const ReportPage = () => {
     <Center height="100vh" bg="gray.50">
       <Box width="90%" maxW="lg" bg="white" p={8} rounded="lg" boxShadow="lg">
         <VStack spacing={8}>
-          {step === 1 && <Step1 onNext={obtainGroupId} />}
+          {step === 1 && 
+            <Step1 
+            onNext={handleNextStep} 
+            setTextReport={setTextReport}
+            textReport={textReport}
+            onBack={backHome}
+            />}
           {/* {step === 2 && <Step2 onNext={handleNextStep} />} */}
         </VStack>
       </Box>
