@@ -34,7 +34,7 @@ const BottomNavbar = () => {
           aria-label="Report"
           onClick={() => handleNavigation("/report")}
           variant="ghost"
-          colorScheme="gray"
+          color={'black'}
           isRound
         />
         <Text fontSize="xs" color="gray.500">
@@ -47,7 +47,7 @@ const BottomNavbar = () => {
           aria-label="Donate"
           onClick={() => handleNavigation("/donate")}
           variant="ghost"
-          colorScheme="blackAlpha"
+          color={'black'}
           isRound
         />
         <Text fontSize="xs" color="black">
@@ -60,7 +60,7 @@ const BottomNavbar = () => {
           aria-label="History"
           onClick={() => handleNavigation("/history")}
           variant="ghost"
-          colorScheme="gray"
+          color={'black'}
           isRound
         />
         <Text fontSize="xs" color="gray.500">

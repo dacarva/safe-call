@@ -6,8 +6,24 @@ import "@semaphore-protocol/contracts/interfaces/ISemaphore.sol";
 contract Feedback {
     ISemaphore public semaphore;
 
+    event MessageStored(uint256 indexed messageId, uint256 indexed message);
+    event CoordinatesStored(uint256 indexed messageId);
+
+    struct Coordinates {
+        int256 TLX;
+        int256 TLY;
+        int256 TRX;
+        int256 TRY;
+        int256 BLX;
+        int256 BLY;
+        int256 BRX;
+        int256 BRY;
+    }
+
     uint256 public groupId;
+    uint8 public constant ROUND_FACTOR = 6;
     mapping (uint256 => uint256) public messageStore;
+    mapping (uint256 => Coordinates) public coordinatesStore;
     uint256 public messageCounter;
 
     constructor(address semaphoreAddress) {
@@ -39,10 +55,12 @@ contract Feedback {
         semaphore.validateProof(groupId, proof);
     }
 
-    function storeMessage (ISemaphore.SemaphoreProof memory proof) public returns (uint256 messsage) {
+    function storeMessage (ISemaphore.SemaphoreProof memory proof, Coordinates memory coordinates) public {
         require(semaphore.verifyProof(groupId, proof), "Invalid proof");
         messageCounter++;
         messageStore[messageCounter] = proof.message;
-        return proof.message;
+        coordinatesStore[messageCounter] = coordinates;
+        emit MessageStored(messageCounter, proof.message);
+        emit CoordinatesStored(messageCounter);
     }
 }

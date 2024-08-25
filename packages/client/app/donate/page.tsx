@@ -1,5 +1,3 @@
-// components/MapView.tsx
-
 "use client";
 
 import {
@@ -19,13 +17,12 @@ import {
   Container,
   Spinner,
 } from "@chakra-ui/react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { BiLinkExternal, BiRightArrowAlt } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { MdReport, MdVolunteerActivism } from "react-icons/md";
+import DonationModal from "@/components/modal/DonateModal";
 
-// Datos de las ONGs
 const ngos = [
   {
     name: "Foundation Mariana Novoa",
@@ -108,6 +105,14 @@ const GoogleMapEmbed = () => {
 };
 
 const Donate = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const onDonate = () => {
+    setIsOpen(true);
+  };
+  const onClose = () => {
+    setIsOpen(false);
+  };
+
   return (
     <Box p={4} className="w-full">
       <Heading size="lg" mb={2}>
@@ -194,6 +199,7 @@ const Donate = () => {
                       backgroundColor="transparent"
                       size="sm"
                       rightIcon={<BiRightArrowAlt />}
+                      onClick={onDonate}
                     >
                       Donate
                     </Button>
@@ -204,6 +210,7 @@ const Donate = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <DonationModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };
