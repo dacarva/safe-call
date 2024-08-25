@@ -4,12 +4,11 @@ import Welcome from "./src/Sections/Welcome";
 import { SignIn } from "@/components/SignIn";
 
 export default function Home() {
-  const { user } = useUser();
+  // @dev: DISCOMENT THIS IS THE LOGIN
+  // const { user } = useUser();
 
-  console.log("user", user);
-  if (!user) {
-    return <SignIn />;
-  }
-
+  // if (!user) {
+  //   return <SignIn />;
+  // }
   return <Welcome />;
 }
