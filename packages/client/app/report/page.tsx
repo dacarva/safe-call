@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import Step2 from "./Step2";
 import { getCoordinates } from "../utils/coordinates";
 import BottomNavbar from "@/components/BottomNavbar";
+import { useSession } from "next-auth/react";
 
 const factor = 10 ** 6;
 
@@ -42,6 +43,7 @@ const ReportPage = () => {
   const [step, setStep] = useState(1);
   const [textReport, setTextReport] = useState("");
   const [reportCoordinates, setReportCoordinates] = useState(BsAs);
+  const { data: session } = useSession();
   const { user } = useUser();
   const router = useRouter();
 
@@ -90,7 +92,7 @@ const ReportPage = () => {
   const obtainGroupId = async () => {
     try {
       const sdk = new W3SSdk();
-      const userIdentity = new Identity("WorldCoinUser1"); //TODO: replace with Worldcoin id
+      const userIdentity = new Identity(session?.user?.name!); //TODO: replace with Worldcoin id
       const publicKey = user?.address;
       if (!publicKey) {
         throw new Error("No public key found");
@@ -157,7 +159,7 @@ const ReportPage = () => {
       console.log("reportCoordinates", reportCoordinates);
       const sdk = new W3SSdk();
 
-      const userIdentity = new Identity("WorldCoinUser1"); //TODO: replace with Worldcoin id
+      const userIdentity = new Identity(session?.user?.name!); //TODO: replace with Worldcoin id
       const semaphoreSubgraph = new SemaphoreSubgraph("matic-amoy");
       const provider = new ethers.JsonRpcProvider(
         process.env.NEXT_PUBLIC_RPC_API_KEY
