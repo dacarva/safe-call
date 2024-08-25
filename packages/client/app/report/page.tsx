@@ -254,9 +254,7 @@ const ReportPage = () => {
               textAlign="center"
               color={"black"}
             >
-              Thank you for donating
-              <br />
-              for the needed!
+              Your report was sent successfully
             </Text>
             <Button
               colorScheme="blackAlpha"

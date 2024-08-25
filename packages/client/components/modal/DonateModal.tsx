@@ -109,7 +109,9 @@ const DonationModal = ({ isOpen, onClose }: Props) => {
                 textAlign="center"
                 color={"black"}
               >
-                Your report was sent successfully
+                Thank you for donating
+                <br />
+                for the needed!
               </Text>
               <Button
                 colorScheme="blackAlpha"
