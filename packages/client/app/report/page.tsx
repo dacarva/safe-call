@@ -1,6 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Box, Center, Toast, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Icon,
+  Spinner,
+  Toast,
+  VStack,
+  Text,
+  Button,
+} from "@chakra-ui/react";
 import Step1 from "./Step1";
 import { W3SSdk } from "@circle-fin/w3s-pw-web-sdk";
 import { Identity } from "@semaphore-protocol/core";
@@ -25,6 +34,7 @@ import Step2 from "./Step2";
 import { getCoordinates } from "../utils/coordinates";
 import BottomNavbar from "@/components/BottomNavbar";
 import { useSession } from "next-auth/react";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 
 const factor = 10 ** 6;
 
@@ -46,6 +56,17 @@ const ReportPage = () => {
   const { data: session } = useSession();
   const { user } = useUser();
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const onDonate = () => {
+    setIsOpen(true);
+  };
+  const onClose = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -90,6 +111,8 @@ const ReportPage = () => {
   };
 
   const obtainGroupId = async () => {
+    setIsLoading(true);
+    setSuccess(false);
     try {
       const sdk = new W3SSdk();
       const userIdentity = new Identity(session?.user?.name!); //TODO: replace with Worldcoin id
@@ -212,6 +235,8 @@ const ReportPage = () => {
           encryptionKey: encryptionKey,
         });
         await executeMethod(challengeId!);
+        setIsLoading(false);
+        setSuccess(true);
       }
     } catch (error) {
       console.error("error on send report is: ", error);
@@ -220,21 +245,68 @@ const ReportPage = () => {
   return (
     <>
       <Center height="100vh" bg="gray.50">
-        <Box width="90%" maxW="lg" bg="white" p={8} rounded="lg" boxShadow="lg">
-          <VStack spacing={8}>
-            {step === 1 && (
-              <Step1
-                onNext={handleNextStep}
-                setTextReport={setTextReport}
-                textReport={textReport}
-                onBack={backHome}
-              />
-            )}
-            {step === 2 && (
-              <Step2 onNext={obtainGroupId} onBack={handleBackStep} />
-            )}
+        {success ? (
+          <VStack spacing={8} justifyContent="center" mt={8} mb={8}>
+            <Icon as={CheckCircleIcon} boxSize={16} color="green.400" />
+            <Text
+              fontSize="2xl"
+              fontWeight="bold"
+              textAlign="center"
+              color={"black"}
+            >
+              Thank you for donating
+              <br />
+              for the needed!
+            </Text>
+            <Button
+              colorScheme="blackAlpha"
+              width="50%"
+              size="lg"
+              onClick={onClose}
+            >
+              Thank you
+            </Button>
           </VStack>
-        </Box>
+        ) : (
+          <Box
+            width="90%"
+            maxW="lg"
+            bg="white"
+            p={8}
+            rounded="lg"
+            boxShadow="lg"
+          >
+            {isLoading ? (
+              <Box
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Spinner
+                  textAlign={"center"}
+                  size="lg"
+                  color="blackAlpha.500"
+                />
+              </Box>
+            ) : (
+              <VStack spacing={8}>
+                {step === 1 && (
+                  <Step1
+                    onNext={handleNextStep}
+                    setTextReport={setTextReport}
+                    textReport={textReport}
+                    onBack={backHome}
+                  />
+                )}
+                {step === 2 && (
+                  <Step2 onNext={obtainGroupId} onBack={handleBackStep} />
+                )}
+              </VStack>
+            )}
+          </Box>
+        )}
       </Center>
       <BottomNavbar />
     </>

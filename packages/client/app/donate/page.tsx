@@ -47,7 +47,7 @@ const ngos = [
   },
 ];
 
-const GoogleMapEmbed = () => {
+export const GoogleMapEmbed = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

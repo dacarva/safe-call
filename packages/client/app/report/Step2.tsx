@@ -1,20 +1,19 @@
-'use client'
-import React from 'react'
-import { Box, Button, Textarea, VStack, Text } from '@chakra-ui/react'
+"use client";
+import React from "react";
+import { Box, Button, Textarea, VStack, Text } from "@chakra-ui/react";
+import { GoogleMapEmbed } from "../donate/page";
 
 interface Step1Props {
-  onNext: () => void
-  onBack: () => void
+  onNext: () => void;
+  onBack: () => void;
 }
 
-const Step2: React.FC<Step1Props> = ({
-  onNext,
-  onBack
-}: Step1Props) => {
+const Step2: React.FC<Step1Props> = ({ onNext, onBack }: Step1Props) => {
   return (
-    <VStack spacing={4} color={'black'} width="100%">
+    <VStack spacing={4} color={"black"} width="100%">
       <Text fontSize="2xl" fontWeight="bold">
         Location
+        <GoogleMapEmbed />
       </Text>
       <Button colorScheme="blackAlpha" onClick={onNext} size="lg" mt={4}>
         Next
@@ -23,7 +22,7 @@ const Step2: React.FC<Step1Props> = ({
         Back
       </Button>
     </VStack>
-  )
-}
+  );
+};
 
-export default Step2
+export default Step2;
