@@ -1,6 +1,5 @@
 "use client";
 import Welcome from "@/app/src/Sections/Welcome";
-import { Button } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export const SignIn = () => {

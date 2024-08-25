@@ -1,3 +1,5 @@
+// app/layout.tsx
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -6,6 +8,7 @@ import dynamic from "next/dynamic";
 import NextAuthProvider from "@/components/next-auth-provider";
 import { ChakraProvider } from "@chakra-ui/react";
 import UserProvider from "@/components/Context/UserContext";
+import BottomNavbar from "@/components/BottomNavbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +28,7 @@ export default function RootLayout({
       ssr: false,
     }
   );
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -34,6 +38,8 @@ export default function RootLayout({
               <ErudaProvider>
                 <MiniKitProvider>{children}</MiniKitProvider>
               </ErudaProvider>
+              <BottomNavbar />
+              {/* Mostrar solo si el usuario está autenticado */}
             </UserProvider>
           </ChakraProvider>
         </NextAuthProvider>
