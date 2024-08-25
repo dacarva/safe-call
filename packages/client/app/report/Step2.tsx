@@ -1,42 +1,29 @@
-"use client";
-import React, { useState } from 'react';
-import { Box, Button, Text, VStack } from '@chakra-ui/react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import dynamic from 'next/dynamic';
+'use client'
+import React from 'react'
+import { Box, Button, Textarea, VStack, Text } from '@chakra-ui/react'
 
-const MapWithNoSSR = dynamic(() => import('./Map'), { ssr: false });
-
-interface Step2Props {
-  onNext: () => void;
+interface Step1Props {
+  onNext: () => void
+  onBack: () => void
 }
 
-const Step2: React.FC<Step2Props> = ({ onNext }) => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-
+const Step2: React.FC<Step1Props> = ({
+  onNext,
+  onBack
+}: Step1Props) => {
   return (
-    <VStack spacing={4} align="stretch">
+    <VStack spacing={4} color={'black'} width="100%">
       <Text fontSize="2xl" fontWeight="bold">
-        When did it happen?
+        Location
       </Text>
-      <DatePicker
-        selected={selectedDate}
-        onChange={(date) => setSelectedDate(date)}
-        showTimeSelect
-        dateFormat="Pp"
-        className="chakra-input"
-      />
-      <Text fontSize="2xl" fontWeight="bold" mt={4}>
-        Where did it happen?
-      </Text>
-      <Box height="200px" width="100%">
-        <MapWithNoSSR />
-      </Box>
       <Button colorScheme="blackAlpha" onClick={onNext} size="lg" mt={4}>
         Next
       </Button>
+      <Button colorScheme="yellow" onClick={onBack} size="lg" mt={2}>
+        Back
+      </Button>
     </VStack>
-  );
-};
+  )
+}
 
-export default Step2;
+export default Step2

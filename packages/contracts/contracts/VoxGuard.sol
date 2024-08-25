@@ -83,17 +83,17 @@ contract VoxGuard {
     }
 
     function withdraw(uint[2] calldata _pA, uint[2][2] calldata _pB, uint[2] calldata _pC, uint[3] calldata _pubSignals) public {
-        circomVerifier.verifyProof(_pA, _pB, _pC, _pubSignals);
-        uint nullifierHash = _pubSignals[0];
-        uint rootPublicInput = _pubSignals[1];
-        address recipient = address(uint160(_pubSignals[2]));
+        // circomVerifier.verifyProof(_pA, _pB, _pC, _pubSignals);
+        // uint nullifierHash = _pubSignals[0];
+        // uint rootPublicInput = _pubSignals[1];
+        // address recipient = address(uint160(_pubSignals[2]));
 
-        require(root == rootPublicInput, "Invalid merke root");
-        require(!nullifiers[nullifierHash], "already withdraw");
+        // require(root == rootPublicInput, "Invalid merke root");
+        // require(!nullifiers[nullifierHash], "already withdraw");
 
-        nullifiers[nullifierHash] = true;
-        donationReceiver[_identifier] -= 10000000;
+        // nullifiers[nullifierHash] = true;
+        // donationReceiver[_identifier] -= 10000000;
 
-        usdc.transfer(recipient,NOTE_VALUE);
+        // usdc.transfer(recipient,NOTE_VALUE);
     }
 }

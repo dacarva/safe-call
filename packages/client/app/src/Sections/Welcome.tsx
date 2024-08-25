@@ -21,79 +21,87 @@ const Welcome = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { setUser, user } = useUser()
   const processLogin = async () => {
-    console.log('Processing login...')
-    const delay = (ms: any) => {
-      return new Promise((resolve) => setTimeout(resolve, ms))
-    }
-    setIsLoading(true)
     try {
-      const userId = uuidv4()
-      console.log('Registering...')
-      const data1 = { userId: userId }
-      const initUserWalletResponse = await fetch('/api/pw/create-user/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data1),
-      })
-      const data2 = await initUserWalletResponse.json()
-      const userToken = data2.userToken
-      const encryptionKey = data2.encryptionKey
-      const challengeId = data2.challengeId
-
-      const sdk = new W3SSdk()
-      const executeMethod = (challengeId: any) => {
-        return new Promise((resolve, reject) => {
-          sdk.execute(challengeId!, (error: any, result: any) => {
-            if (error) {
-              Toast({
-                title: 'Error',
-                description: 'An error occurred on the pin selection method',
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-              })
-              reject(error)
-            } else if (result) {
-              console.log('User registered!')
-              resolve(result)
-            }
-          })
-        })
+      console.log('Processing login...')
+      const delay = (ms: any) => {
+        return new Promise((resolve) => setTimeout(resolve, ms))
       }
-      let walletAddress, walletId
-      sdk.setAppSettings({ appId: process.env.NEXT_PUBLIC_APP_ID! })
-      console.log('userToken:', userToken);
-      console.log('encryptionKey:', encryptionKey);
-      
-      sdk.setAuthentication({
-        userToken: userToken,
-        encryptionKey: encryptionKey,
-      })
-      // Wait for the successful completion of executeMethod
-      await executeMethod(challengeId!)
-      await delay(1700)
-      const data = { userToken: userToken }
-      console.log('data is:', data);
-      
-      // After successful completion of sdk.execute() make another API call
-      const status = await fetch('/api/pw/check-user-status/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-
-      console.log('Status: ')
-      const body = await status.json()
-      walletAddress = body.wallet.address
-      walletId = body.wallet.id
-      console.log('Wallet Address:', walletAddress)
-      console.log('Wallet Id:', walletId)
-      setUser({
-        userId: userId,
-        address: walletAddress,
-        walletId: walletId,
-      })
-      router.push('/instructions')
+      setIsLoading(true)
+      const userDataStored = localStorage.getItem('user')
+      if (userDataStored) {
+        const parsedData = JSON.parse(userDataStored)
+        setUser(parsedData)
+        router.push('/home')
+      } else {
+        const userId = uuidv4()
+        const data1 = { userId: userId }
+        const initUserWalletResponse = await fetch('/api/pw/create-user/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data1),
+        })
+        const data2 = await initUserWalletResponse.json()
+        const userToken = data2.userToken
+        const encryptionKey = data2.encryptionKey
+        const challengeId = data2.challengeId
+  
+        const sdk = new W3SSdk()
+        const executeMethod = (challengeId: any) => {
+          return new Promise((resolve, reject) => {
+            sdk.execute(challengeId!, (error: any, result: any) => {
+              if (error) {
+                Toast({
+                  title: 'Error',
+                  description: 'An error occurred on the pin selection method',
+                  status: 'error',
+                  duration: 5000,
+                  isClosable: true,
+                })
+                reject(error)
+              } else if (result) {
+                console.log('User registered!')
+                resolve(result)
+              }
+            })
+          })
+        }
+        let walletAddress, walletId
+        sdk.setAppSettings({ appId: process.env.NEXT_PUBLIC_APP_ID! })
+        console.log('userToken:', userToken);
+        console.log('encryptionKey:', encryptionKey);
+        
+        sdk.setAuthentication({
+          userToken: userToken,
+          encryptionKey: encryptionKey,
+        })
+        // Wait for the successful completion of executeMethod
+        await executeMethod(challengeId!)
+        await delay(1700)
+        const data = { userToken: userToken }
+        console.log('data is:', data);
+        
+        // After successful completion of sdk.execute() make another API call
+        const status = await fetch('/api/pw/check-user-status/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        })
+  
+        console.log('Status: ')
+        const body = await status.json()
+        walletAddress = body.wallet.address
+        walletId = body.wallet.id
+        console.log('Wallet Address:', walletAddress)
+        console.log('Wallet Id:', walletId)
+        const userData = {
+          userId: userId,
+          address: walletAddress,
+          walletId: walletId,
+        }
+        setUser(userData)
+        localStorage.setItem('user', JSON.stringify(userData))
+        router.push('/instructions')
+      }
     } catch (error) {
       console.error('Error while processing login:', error)
       Toast({
