@@ -1,5 +1,5 @@
 import { FEEDBACK_ADDRESS } from './../../../contracts/constants';
-import { ethers } from "ethers";
+import { ethers, decodeBytes32String } from "ethers";
 import {
 	Feedback,
 	Feedback__factory,
@@ -19,7 +19,9 @@ export async function fetchReports() {
         const latestReportIndex = Number(await feedback.messageCounter());
         const roundFactor = 10 ** Number(await feedback.ROUND_FACTOR());
         for (let i = 1; i <= latestReportIndex; i++) {
-            const message = await feedback.messageStore(i);
+            const msg = await feedback.messageStore(i);
+            const hexString = BigInt(msg).toString(16).padStart(64, '0');
+            const encodedMessage = `0x${hexString}`;
             const coordinatesRaw = await feedback.coordinatesStore(i);
             const coordinates = {
                 TLX: Number(coordinatesRaw.TLX)/roundFactor,
@@ -32,7 +34,7 @@ export async function fetchReports() {
                 BRY: Number(coordinatesRaw.BRY)/roundFactor,
             };
             reports.push({
-                message,
+                message: decodeBytes32String(encodedMessage),
                 coordinates,
             });
         }
