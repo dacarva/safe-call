@@ -3,8 +3,11 @@
 import React from 'react'
 import { Box, Button, Center, Flex, Icon, Image, Text, VStack } from "@chakra-ui/react";
 import { FaCheckCircle, FaArrowRight, FaRegHandPointer } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
 
 const Home = () => {
+  const router = useRouter()
+
   return (
     <Center height="100vh" bg="white" color={"black"}>
       <VStack spacing={8} width="90%">
@@ -42,6 +45,7 @@ const Home = () => {
             leftIcon={<Icon as={FaRegHandPointer} boxSize={{ base: 5, md: 6 }} ml={-1} />}
             rightIcon={<Icon as={FaArrowRight} boxSize={{ base: 5, md: 6 }} ml={2} />}
             fontSize={{ base: "lg", md: "2xl" }}
+            onClick={() => router.push('/report')}
           >
               Create Report
           </Button>
