@@ -14,10 +14,10 @@ export const SignIn = () => {
     return (
       <>
         {/* This will be removed for the final version */}
-        <div className="fixed top-0 ">
+        {/* <div className="fixed top-0 ">
           Signed in as {session?.user?.name?.slice(0, 10)} <br />
           <button onClick={() => signOut()}>Sign out</button>
-        </div>
+        </div> */}
         <Welcome />
       </>
     );
