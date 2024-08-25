@@ -14,7 +14,6 @@ import {
   Button,
   Icon,
   Flex,
-  Container,
   Spinner,
 } from "@chakra-ui/react";
 import { BiLinkExternal, BiRightArrowAlt } from "react-icons/bi";
@@ -22,6 +21,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { MdReport, MdVolunteerActivism } from "react-icons/md";
 import DonationModal from "@/components/modal/DonateModal";
+import BottomNavbar from "@/components/BottomNavbar";
 
 const ngos = [
   {
@@ -51,10 +51,9 @@ const GoogleMapEmbed = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulamos un tiempo de carga para el iframe
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000); // Ajusta este tiempo según necesites
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -114,104 +113,115 @@ const Donate = () => {
   };
 
   return (
-    <Box p={4} className="w-full">
-      <Heading size="lg" mb={2}>
-        Donate for love ❤️
-      </Heading>
-      <Text mb={4}>
-        NGOs are helping you and other accident victims. You can help them too
-        by donating your love for them.
-      </Text>
-      <Tabs variant="soft-rounded" colorScheme="gray">
-        <TabList
-          mb={4}
-          width={"100%"}
-          backgroundColor={"#E2E8F0"}
-          borderRadius={"9999px"}
-        >
-          <Tab width={"50%"}>Reports</Tab>
-          <Tab width={"50%"}>NGOs</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <GoogleMapEmbed />
-          </TabPanel>
-          <TabPanel>
-            <Stack spacing={4} height={"550px"} overflow={"auto"}>
-              {ngos.map((ngo, index) => (
-                <Box
-                  key={index}
-                  bg={ngo.bgColor}
-                  p={4}
-                  borderRadius="lg"
-                  boxShadow="md"
-                >
-                  <HStack justify="space-between" mb={2}>
-                    <Image
-                      src={ngo.image}
-                      alt={ngo.name}
-                      width={70}
-                      height={70}
-                      style={{ marginTop: "2rem" }}
-                    />
-                    <Box style={{ width: "100%" }} position={"relative"} ml={2}>
+    <>
+      <Box p={4} className="w-full">
+        <Heading size="lg" mb={2}>
+          Donate for love ❤️
+        </Heading>
+        <Text mb={4}>
+          NGOs are helping you and other accident victims. You can help them too
+          by donating your love for them.
+        </Text>
+        <Tabs variant="soft-rounded" colorScheme="gray">
+          <TabList
+            mb={4}
+            width={"100%"}
+            backgroundColor={"#E2E8F0"}
+            borderRadius={"9999px"}
+          >
+            <Tab width={"50%"}>Reports</Tab>
+            <Tab width={"50%"}>NGOs</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <GoogleMapEmbed />
+            </TabPanel>
+            <TabPanel>
+              <Stack spacing={4} height={"550px"} overflow={"auto"}>
+                {ngos.map((ngo, index) => (
+                  <Box
+                    key={index}
+                    bg={ngo.bgColor}
+                    p={4}
+                    borderRadius="lg"
+                    boxShadow="md"
+                  >
+                    <HStack justify="space-between" mb={2}>
+                      <Image
+                        src={ngo.image}
+                        alt={ngo.name}
+                        width={70}
+                        height={70}
+                        style={{ marginTop: "2rem" }}
+                      />
                       <Box
-                        width={"100%"}
-                        display={"flex"}
-                        justifyContent={"end"}
+                        style={{ width: "100%" }}
+                        position={"relative"}
+                        ml={2}
                       >
-                        <Icon
-                          as={BiLinkExternal}
-                          right={"0"}
-                          top={"0"}
-                          color={"#8E8E93"}
-                          fontSize={"1.5rem"}
-                        />
-                      </Box>
-                      <Box
-                        style={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "space-around",
-                          alignItems: "start",
-                        }}
-                      >
-                        <Text fontWeight="bold" style={{ flexGrow: "2" }}>
-                          {ngo.name}{" "}
-                        </Text>
-                      </Box>
-                      <Box color="#8E8E93" mt={3}>
-                        <Flex alignItems="center" mb="10px" lineHeight={"0.1"}>
-                          <MdReport style={{ marginRight: "10px" }} />
-                          <Text fontSize="sm">Reports handled: 89</Text>
-                        </Flex>
-                        <Flex alignItems="center">
-                          <MdVolunteerActivism
-                            style={{ marginRight: "10px" }}
+                        <Box
+                          width={"100%"}
+                          display={"flex"}
+                          justifyContent={"end"}
+                        >
+                          <Icon
+                            as={BiLinkExternal}
+                            right={"0"}
+                            top={"0"}
+                            color={"#8E8E93"}
+                            fontSize={"1.5rem"}
                           />
-                          <Text fontSize="sm">Donation received: $1,000</Text>
-                        </Flex>
+                        </Box>
+                        <Box
+                          style={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "space-around",
+                            alignItems: "start",
+                          }}
+                        >
+                          <Text fontWeight="bold" style={{ flexGrow: "2" }}>
+                            {ngo.name}{" "}
+                          </Text>
+                        </Box>
+                        <Box color="#8E8E93" mt={3}>
+                          <Flex
+                            alignItems="center"
+                            mb="10px"
+                            lineHeight={"0.1"}
+                          >
+                            <MdReport style={{ marginRight: "10px" }} />
+                            <Text fontSize="sm">Reports handled: 89</Text>
+                          </Flex>
+                          <Flex alignItems="center">
+                            <MdVolunteerActivism
+                              style={{ marginRight: "10px" }}
+                            />
+                            <Text fontSize="sm">Donation received: $1,000</Text>
+                          </Flex>
+                        </Box>
                       </Box>
-                    </Box>
-                  </HStack>
-                  <Flex justify="end">
-                    <Button
-                      backgroundColor="transparent"
-                      size="sm"
-                      rightIcon={<BiRightArrowAlt />}
-                      onClick={onDonate}
-                    >
-                      Donate
-                    </Button>
-                  </Flex>
-                </Box>
-              ))}
-            </Stack>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      <DonationModal isOpen={isOpen} onClose={onClose} />
-    </Box>
+                    </HStack>
+                    <Flex justify="end">
+                      <Button
+                        backgroundColor="transparent"
+                        size="sm"
+                        rightIcon={<BiRightArrowAlt />}
+                        onClick={onDonate}
+                      >
+                        Donate
+                      </Button>
+                    </Flex>
+                  </Box>
+                ))}
+              </Stack>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+        <DonationModal isOpen={isOpen} onClose={onClose} />
+      </Box>
+      <BottomNavbar />
+    </>
   );
 };
 

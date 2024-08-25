@@ -38,8 +38,6 @@ export default function RootLayout({
               <ErudaProvider>
                 <MiniKitProvider>{children}</MiniKitProvider>
               </ErudaProvider>
-              <BottomNavbar />
-              {/* Mostrar solo si el usuario está autenticado */}
             </UserProvider>
           </ChakraProvider>
         </NextAuthProvider>

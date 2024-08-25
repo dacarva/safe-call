@@ -26,8 +26,16 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user }) {
+      console.log("user", user);
+      // localStorage.setItem("worldCoinUser", JSON.stringify(user));
       return true;
     },
+    // async jwt({ token, user }) {
+    //   if (user) {
+    //     token = { ...token, ...user };
+    //   }
+    //   return token;
+    // },
   },
   debug: process.env.NODE_ENV === "development",
 };
